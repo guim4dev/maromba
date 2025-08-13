@@ -1,0 +1,19 @@
+---
+description: Anything business/feature related
+alwaysApply: false
+---
+
+precisamos fazer um projetinho maneiro aqui com nuxt.
+
+Esse projeto ser uma PWA (preciso ser capaz de "salvar" no meu celular) de tracking de treinamento, tudo do lado do cliente.
+
+tenho um arquivo .json já no formato em /public/training-schedules.current/training.json.
+
+precisamos de um projeto em que eu consiga ver a última semana de treino, número de treinos por semana (e que dias eu fiz ou não fiz treino). também preciso ser capaz de ir interagindo durante o treino. A ideia é ter um controle semanal, com a semana virando toda segunda feira.
+
+Ou seja, as features são:
+
+- histórico de realização de treino
+- acompanhamento de treino
+
+O treino que aparece na interface deve ser feito com base no formato do arquivo mencionado.

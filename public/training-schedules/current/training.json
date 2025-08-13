@@ -1,0 +1,227 @@
+{
+  "treino": {
+    "principios_gerais": {
+      "cadencia": "excêntrica / pausa / concêntrica / pausa",
+      "carga": "última repetição próxima da falha (RIR 1–2)",
+      "descanso": "entre séries, conforme tipo de exercício"
+    },
+    "dias": [
+      {
+        "nome": "Push",
+        "grupo_muscular": ["Peito", "Ombro", "Tríceps"],
+        "exercicios": [
+          {
+            "nome": "Supino reto com barra",
+            "reps": "6–10",
+            "cadencia": "3-0-1-0",
+            "descanso": "2 min",
+            "numero_series": 3
+          },
+          {
+            "nome": "Supino inclinado com halteres",
+            "reps": "8–12",
+            "cadencia": "3-0-1-0",
+            "descanso": "90 seg",
+            "numero_series": 3
+          },
+          {
+            "nome": "Voador (peck deck)",
+            "reps": "8–12",
+            "cadencia": "2-1-2-0",
+            "descanso": "90 seg",
+            "numero_series": 3
+          },
+          {
+            "nome": "Desenvolvimento",
+            "reps": "6–10",
+            "cadencia": "3-0-1-0",
+            "descanso": "2 min",
+            "numero_series": 3
+          },
+          {
+            "nome": "Tríceps testa (barra EZ ou corda)",
+            "reps": "8–12",
+            "cadencia": "2-0-1-0",
+            "descanso": "90 seg",
+            "numero_series": 3
+          }
+        ]
+      },
+      {
+        "nome": "Pull",
+        "grupo_muscular": ["Costas", "Bíceps"],
+        "exercicios": [
+          {
+            "nome": "Puxada com triângulo (pegada neutra)",
+            "reps": "6–10",
+            "cadencia": "3-1-1-0",
+            "descanso": "2 min",
+            "numero_series": 3
+          },
+          {
+            "nome": "Remada alta",
+            "reps": "6–10",
+            "cadencia": "3-1-1-0",
+            "descanso": "2 min",
+            "numero_series": 3
+          },
+          {
+            "nome": "Remada baixa",
+            "reps": "6–10",
+            "cadencia": "3-1-1-0",
+            "descanso": "2 min",
+            "numero_series": 3
+          },
+          {
+            "nome": "Crucifixo inverso (posterior de ombro)",
+            "reps": "8–12",
+            "cadencia": "2-1-1-0",
+            "descanso": "90 seg",
+            "numero_series": 3
+          },
+          {
+            "nome": "Bíceps alongado (pra trás)",
+            "reps": "8–12",
+            "cadencia": "2-0-1-0",
+            "descanso": "90 seg",
+            "numero_series": 3
+          }
+        ]
+      },
+      {
+        "nome": "Legs",
+        "grupo_muscular": [
+          "Quadríceps",
+          "Posterior de coxa",
+          "Panturrilha",
+          "Glúteo"
+        ],
+        "exercicios": [
+          {
+            "nome": "Leg press + panturrilha",
+            "reps": "8–12 + 12–20",
+            "cadencia": "2-0-1-0 (perna) / 1-1-2-1 (pant.)",
+            "descanso": "2 min",
+            "numero_series": 3
+          },
+          {
+            "nome": "Cadeira Extensora",
+            "reps": "6–10",
+            "cadencia": "3-1-1-0",
+            "descanso": "2 min",
+            "numero_series": 3
+          },
+          {
+            "nome": "Stiff com barra ou halteres",
+            "reps": "8–12",
+            "cadencia": "3-1-1-0",
+            "descanso": "2 min",
+            "numero_series": 3
+          },
+          {
+            "nome": "Mesa/Cadeira flexora",
+            "reps": "10–15",
+            "cadencia": "2-1-2-0",
+            "descanso": "90 seg",
+            "numero_series": 3
+          },
+          {
+            "nome": "Agachamento búlgaro focado em glúteo",
+            "reps": "8–12 por perna",
+            "cadencia": "3-1-1-0",
+            "descanso": "2 min",
+            "numero_series": 3
+          }
+        ]
+      },
+      {
+        "nome": "Upper",
+        "grupo_muscular": ["Peito", "Ombro", "Tríceps", "Costas", "Bíceps"],
+        "exercicios": [
+          {
+            "nome": "Supino reto",
+            "reps": "6–10",
+            "cadencia": "3-0-1-0",
+            "descanso": "2 min",
+            "numero_series": 3
+          },
+          {
+            "nome": "Puxada Alta",
+            "reps": "6–10",
+            "cadencia": "3-1-1-0",
+            "descanso": "2 min",
+            "numero_series": 3
+          },
+          {
+            "nome": "Desenvolvimento",
+            "reps": "6–10",
+            "cadencia": "3-0-1-0",
+            "descanso": "2 min",
+            "numero_series": 3
+          },
+          {
+            "nome": "Tríceps corda",
+            "reps": "8–12",
+            "cadencia": "2-0-1-0",
+            "descanso": "90 seg",
+            "numero_series": 3
+          },
+          {
+            "nome": "Rosca direta",
+            "reps": "8–12",
+            "cadencia": "2-0-1-0",
+            "descanso": "90 seg",
+            "numero_series": 3
+          }
+        ]
+      },
+      {
+        "nome": "Lower + Core",
+        "grupo_muscular": [
+          "Quadríceps",
+          "Posterior de coxa",
+          "Glúteo",
+          "Lombar",
+          "Abdômen"
+        ],
+        "exercicios": [
+          {
+            "nome": "Agachamento",
+            "reps": "6–10",
+            "cadencia": "3-1-1-0",
+            "descanso": "2 min",
+            "numero_series": 3
+          },
+          {
+            "nome": "Stiff com barra ou halteres",
+            "reps": "8–12",
+            "cadencia": "3-1-1-0",
+            "descanso": "2 min",
+            "numero_series": 3
+          },
+          {
+            "nome": "Agachamento búlgaro focado em glúteo",
+            "reps": "8–12 por perna",
+            "cadencia": "3-1-1-0",
+            "descanso": "90 seg",
+            "numero_series": 3
+          },
+          {
+            "nome": "Extensão de lombar",
+            "reps": "12–15",
+            "cadencia": "2-1-2-0",
+            "descanso": "90 seg",
+            "numero_series": 3
+          },
+          {
+            "nome": "Abdomen - sugestão: Ab wheel (roda de abdômen)",
+            "reps": "8–12",
+            "cadencia": "2-1-2-0",
+            "descanso": "60 seg",
+            "numero_series": 3
+          }
+        ]
+      }
+    ]
+  }
+}
