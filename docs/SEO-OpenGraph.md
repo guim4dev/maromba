@@ -149,13 +149,13 @@ Compartilhe o link no WhatsApp para ver o preview
 ## Dimensões da Imagem
 
 - **Recomendado**: 1200x630px (proporção 1.91:1)
-- **Atual**: 2400x1260px (proporção personalizada)
+- **Atual**: 1200x630px (proporção personalizada)
 - **Formato**: PNG (suporta transparência)
 - **Tamanho**: Máximo 8MB
 
 ## Próximos Passos
 
-1. **Criar a imagem banner** em 2400x1260px
+1. **Criar a imagem banner** em 1200x630px
 2. **Fazer upload** para `https://maromba.guima.digital/og-banner.png`
 3. **Testar** em todas as redes sociais
 4. **Monitorar** métricas de SEO e compartilhamento

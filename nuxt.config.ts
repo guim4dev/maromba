@@ -40,8 +40,8 @@ export default defineNuxtConfig({
           property: "og:image",
           content: "https://maromba.guima.digital/og-banner.png",
         },
-        { property: "og:image:width", content: "2400" },
-        { property: "og:image:height", content: "1260" },
+        { property: "og:image:width", content: "1200" },
+        { property: "og:image:height", content: "630" },
         {
           property: "og:image:alt",
           content: "Maromba - App de tracking de treino de musculação",
