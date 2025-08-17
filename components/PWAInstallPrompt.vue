@@ -74,6 +74,11 @@ const waitedLongEnough = ref(false);
 const hasJustDismissed = ref(false);
 
 const showInstallPrompt = computed(() => {
+  console.log({
+    canInstall: canInstall.value,
+    isInstalled: isInstalled.value,
+    hasUserDismissed: hasUserDismissed(),
+  });
   return canInstall.value && !isInstalled.value && !hasUserDismissed();
 });
 
