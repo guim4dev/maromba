@@ -187,18 +187,40 @@ export const useTraining = () => {
     }
   };
 
-  // Obter início da semana (segunda-feira)
+  // Obter início da semana (segunda-feira) no timezone do Brasil
   const getWeekStart = (date: Date = new Date()): string => {
-    const d = new Date(date);
-    if (isNaN(d.getTime())) {
-      // Fallback para data atual se a data for inválida
-      d.setTime(Date.now());
+    // Converter para timezone do Brasil (UTC-3)
+    const brazilTime = new Date(
+      date.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" })
+    );
+
+    if (isNaN(brazilTime.getTime())) {
+      // Fallback para data atual no timezone do Brasil
+      const now = new Date();
+      const brazilNow = new Date(
+        now.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" })
+      );
+      brazilTime.setTime(brazilNow.getTime());
     }
 
-    const day = d.getDay();
-    const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Ajusta para segunda-feira
-    const monday = new Date(d.setDate(diff));
-    return monday.toISOString().split("T")[0];
+    const day = brazilTime.getDay();
+    // getDay() retorna: 0=domingo, 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta, 6=sábado
+    // Queremos que segunda-feira seja o início da semana
+    const daysToSubtract = day === 0 ? 6 : day - 1;
+    brazilTime.setDate(brazilTime.getDate() - daysToSubtract);
+
+    console.log("getWeekStart debug:", {
+      originalDate: date.toISOString().split("T")[0],
+      brazilDate: brazilTime.toISOString().split("T")[0],
+      dayOfWeek: day,
+      daysToSubtract,
+    });
+
+    // Retornar no formato YYYY-MM-DD
+    const year = brazilTime.getFullYear();
+    const month = String(brazilTime.getMonth() + 1).padStart(2, "0");
+    const dayOfMonth = String(brazilTime.getDate()).padStart(2, "0");
+    return `${year}-${month}-${dayOfMonth}`;
   };
 
   // Obter semana atual

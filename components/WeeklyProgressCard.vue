@@ -80,18 +80,9 @@
       </div>
     </div>
 
-    <!-- Botão para adicionar treino -->
-    <div class="mt-6 space-y-2">
+    <!-- Botão para limpar todas as sessões -->
+    <div class="mt-6 space-y-2" v-if="stats.total > 0">
       <button
-        @click="showAddWorkout = true"
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
-      >
-        + Adicionar Treino
-      </button>
-
-      <!-- Botão para limpar todas as sessões -->
-      <button
-        v-if="stats.total > 0"
         @click="showClearConfirmation = true"
         class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
       >

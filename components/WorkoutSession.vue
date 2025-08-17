@@ -1,7 +1,10 @@
 <template>
-  <div v-if="trainingData" class="bg-white rounded-lg shadow-md">
+  <div
+    v-if="trainingData"
+    class="bg-white rounded-lg shadow-md flex flex-col h-full max-h-[90vh]"
+  >
     <!-- Header com botão de fechar -->
-    <div class="flex items-center justify-between p-6 border-b">
+    <div class="flex items-center justify-between p-6 border-b flex-shrink-0">
       <div>
         <h2 class="text-xl font-bold text-gray-800">{{ session.dayName }}</h2>
         <p class="text-sm text-gray-600">{{ formatDate(session.date) }}</p>
@@ -42,7 +45,8 @@
       </div>
     </div>
 
-    <div class="p-6">
+    <!-- Conteúdo scrollável -->
+    <div class="flex-1 overflow-y-auto p-6">
       <!-- Exercícios -->
       <div class="space-y-6">
         <div
@@ -110,17 +114,17 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Botões de ação -->
-      <div class="flex space-x-3 mt-6">
-        <button
-          @click="completeSession"
-          :disabled="session.completed"
-          class="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 text-white font-medium py-3 px-4 rounded-lg transition-colors"
-        >
-          {{ session.completed ? "Treino Concluído" : "Concluir Treino" }}
-        </button>
-      </div>
+    <!-- Footer fixo com botão de concluir -->
+    <div class="border-t bg-white p-6 flex-shrink-0">
+      <button
+        @click="completeSession"
+        :disabled="session.completed"
+        class="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-300 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+      >
+        {{ session.completed ? "Treino Concluído" : "Concluir Treino" }}
+      </button>
     </div>
   </div>
 </template>
