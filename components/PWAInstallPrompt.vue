@@ -25,13 +25,7 @@
           </div>
           <div>
             <p class="font-semibold text-sm">Instalar Maromba</p>
-            <p class="text-xs opacity-90">
-              {{
-                isIOS
-                  ? "Adicionar à tela inicial"
-                  : "Adicione ao seu dispositivo"
-              }}
-            </p>
+            <p class="text-xs opacity-90">Adicione ao seu dispositivo</p>
           </div>
         </div>
 
@@ -40,7 +34,7 @@
             @click="install"
             class="bg-white text-blue-600 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors"
           >
-            {{ isIOS ? "Como instalar" : "Instalar" }}
+            Instalar
           </button>
           <button
             @click="dismissPrompt"
@@ -70,7 +64,7 @@
 const {
   isInstalled,
   canInstall,
-  isIOS,
+  // isIOS, // Comentado temporariamente
   install,
   markAsDismissed,
   hasUserDismissed,
@@ -81,11 +75,6 @@ const waitedLongEnough = ref(false);
 const hasJustDismissed = ref(false);
 
 const showInstallPrompt = computed(() => {
-  console.log({
-    canInstall: canInstall.value,
-    isInstalled: isInstalled.value,
-    hasUserDismissed: hasUserDismissed(),
-  });
   return canInstall.value && !isInstalled.value && !hasUserDismissed();
 });
 

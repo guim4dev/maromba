@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     },
     client: {
       installPrompt: true,
+      registerPlugin: true,
     },
     manifest: {
       name: "Maromba - Tracking de Treino",

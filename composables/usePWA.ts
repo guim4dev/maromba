@@ -1,14 +1,8 @@
 export const usePWAInstall = () => {
-  const isInstalled = ref(false);
-  const canInstall = ref(false);
-  const deferredPrompt = ref<any>(null);
+  const { $pwa } = useNuxtApp();
   const isIOS = ref(false);
 
   // Detectar iOS
-  /**
-   * Detects if the current device is running iOS.
-   * Sets isIOS.value to true for iPad, iPhone, or iPod (including iPadOS 13+ in desktop mode).
-   */
   const detectIOS = () => {
     if (!import.meta.client) return;
 
@@ -21,29 +15,12 @@ export const usePWAInstall = () => {
     isIOS.value = isIOSDevice && !(window as any).MSStream;
   };
 
-  // Verificar se o PWA já foi instalado
-  const checkIfInstalled = () => {
-    if (import.meta.client) {
-      isInstalled.value =
-        localStorage.getItem("pwa-installed") === "true" ||
-        window.matchMedia("(display-mode: standalone)").matches;
-    }
-  };
-
   // Verificar se o usuário já rejeitou o prompt
   const hasUserDismissed = () => {
     if (import.meta.client) {
       return sessionStorage.getItem("pwa-dismissed") === "true";
     }
     return false;
-  };
-
-  // Marcar como instalado
-  const markAsInstalled = () => {
-    if (import.meta.client) {
-      localStorage.setItem("pwa-installed", "true");
-      isInstalled.value = true;
-    }
   };
 
   // Marcar como rejeitado
@@ -55,22 +32,13 @@ export const usePWAInstall = () => {
 
   // Instalar PWA
   const install = async () => {
-    if (isIOS.value) {
-      // Para iOS, mostrar instruções
-      showIOSInstructions();
-    } else if (deferredPrompt.value) {
-      deferredPrompt.value.prompt();
-      const { outcome } = await deferredPrompt.value.userChoice;
-
-      if (outcome === "accepted") {
-        markAsInstalled();
-        console.log("PWA instalado com sucesso!");
-      } else {
-        console.log("Instalação do PWA rejeitada");
-      }
-
-      deferredPrompt.value = null;
-      canInstall.value = false;
+    // if (isIOS.value) {
+    //   // Para iOS, mostrar instruções
+    //   showIOSInstructions();
+    // } else
+    if ($pwa) {
+      // Usar a função nativa do $pwa
+      await $pwa.install();
     }
   };
 
@@ -114,32 +82,25 @@ export const usePWAInstall = () => {
     });
   };
 
-  // Inicializar listeners
+  // Computed properties usando $pwa nativo
+  const isInstalled = computed(() => {
+    if (!$pwa) return false;
+    // Usar a propriedade correta baseada na documentação
+    return $pwa.isPWAInstalled || false;
+  });
+
+  const canInstall = computed(() => {
+    // if (isIOS.value) {
+    //   return !isInstalled.value && !hasUserDismissed();
+    // }
+    console.log("showInstallPrompt", $pwa?.showInstallPrompt);
+    return $pwa?.showInstallPrompt || false;
+  });
+
+  // Inicializar
   const init = () => {
     if (import.meta.client) {
-      detectIOS();
-      checkIfInstalled();
-
-      if (isIOS.value) {
-        // Para iOS, sempre mostrar o prompt se não foi instalado
-        console.log("isIOS.value", isIOS.value);
-        console.log("isInstalled.value", isInstalled.value);
-        console.log("hasUserDismissed()", hasUserDismissed());
-        canInstall.value = !isInstalled.value && !hasUserDismissed();
-      } else {
-        // Para outros navegadores, usar beforeinstallprompt
-        window.addEventListener("beforeinstallprompt", (e) => {
-          e.preventDefault();
-          deferredPrompt.value = e;
-          canInstall.value = true;
-        });
-
-        window.addEventListener("appinstalled", () => {
-          markAsInstalled();
-          canInstall.value = false;
-          deferredPrompt.value = null;
-        });
-      }
+      // detectIOS(); // Comentado temporariamente
     }
   };
 
