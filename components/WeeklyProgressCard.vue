@@ -435,8 +435,6 @@ const {
   weeklyProgress,
 } = useTraining();
 
-console.log("addWorkoutSession importada:", typeof addWorkoutSession);
-
 const showAddWorkout = ref(false);
 const showDayOptions = ref(false);
 const showWorkoutSession = ref(false);
@@ -454,17 +452,10 @@ const weekRange = computed(() => {
 });
 
 const availableDays = computed(() => {
-  console.log("availableDays computed - trainingData:", trainingData.value);
   if (!trainingData.value || !trainingData.value.treino) {
-    console.log("trainingData ou treino não disponível");
     return [];
   }
   const dias = trainingData.value.treino.dias || [];
-  console.log("availableDays computed - dias encontrados:", dias);
-  console.log(
-    "Nomes dos dias:",
-    dias.map((d) => d.nome)
-  );
   return dias;
 });
 
@@ -472,8 +463,7 @@ const availableDays = computed(() => {
 watch(
   availableDays,
   (newDays) => {
-    console.log("availableDays mudou:", newDays);
-    console.log("Número de dias disponíveis:", newDays.length);
+    // Monitoramento silencioso das mudanças
   },
   { deep: true }
 );
@@ -482,13 +472,7 @@ watch(
 watch(
   trainingData,
   (newData) => {
-    console.log("trainingData mudou no WeeklyProgressCard:", newData);
-    if (newData?.treino?.dias) {
-      console.log(
-        "Dias disponíveis após mudança:",
-        newData.treino.dias.map((d) => d.nome)
-      );
-    }
+    // Atualização silenciosa quando trainingData mudar
   },
   { deep: true, immediate: true }
 );
@@ -498,20 +482,24 @@ const formatWeekRange = (weekStart: string) => {
     return "Carregando...";
   }
 
-  const start = new Date(weekStart);
+  // Criar datas no timezone do Brasil
+  const start = new Date(weekStart + "T00:00:00-03:00");
   if (isNaN(start.getTime())) {
     return "Data inválida";
   }
 
+  // Criar uma nova data para o final da semana (domingo) no timezone do Brasil
   const end = new Date(start);
   end.setDate(start.getDate() + 6);
 
   return `${start.toLocaleDateString("pt-BR", {
     day: "2-digit",
     month: "2-digit",
+    timeZone: "America/Sao_Paulo",
   })} - ${end.toLocaleDateString("pt-BR", {
     day: "2-digit",
     month: "2-digit",
+    timeZone: "America/Sao_Paulo",
   })}`;
 };
 
@@ -540,9 +528,6 @@ const getTotalSets = (day: any) => {
 };
 
 const addWorkout = (dayName: string) => {
-  console.log("addWorkout chamada com dayName:", dayName);
-  console.log("trainingData antes de addWorkoutSession:", trainingData.value);
-
   try {
     // Se estamos adicionando um treino a um dia específico da semana
     if (selectedDay.value && selectedDay.value.day) {
@@ -551,7 +536,6 @@ const addWorkout = (dayName: string) => {
       // Fallback: usar apenas o nome do treino
       addWorkoutSession(dayName);
     }
-    console.log("addWorkoutSession executada com sucesso");
   } catch (error) {
     console.error("Erro ao adicionar workout session:", error);
   }
@@ -560,8 +544,6 @@ const addWorkout = (dayName: string) => {
 };
 
 const addWorkoutAndOpenSession = (dayName: string) => {
-  console.log("addWorkoutAndOpenSession chamada com dayName:", dayName);
-
   try {
     // Se estamos adicionando um treino a um dia específico da semana
     if (selectedDay.value && selectedDay.value.day) {
@@ -574,7 +556,6 @@ const addWorkoutAndOpenSession = (dayName: string) => {
       // Fallback: usar apenas o nome do treino
       addWorkoutSession(dayName);
     }
-    console.log("addWorkoutSession executada com sucesso");
   } catch (error) {
     console.error("Erro ao adicionar workout session:", error);
   }
@@ -583,8 +564,6 @@ const addWorkoutAndOpenSession = (dayName: string) => {
 };
 
 const handleDayClick = (day: any) => {
-  console.log("handleDayClick chamada com day:", day);
-
   if (day.hasSession) {
     // Se já tem sessão, mostrar opções de editar/deletar
     showDayOptions.value = true;
@@ -599,7 +578,6 @@ const handleDayClick = (day: any) => {
 const markAsRest = (dayName: string) => {
   try {
     markDayAsRest(dayName);
-    console.log("Dia marcado como descanso:", dayName);
   } catch (error) {
     console.error("Erro ao marcar dia como descanso:", error);
   }
@@ -610,7 +588,6 @@ const markAsRest = (dayName: string) => {
 const deleteDaySession = (dayName: string) => {
   try {
     deleteSessionByDay(dayName);
-    console.log("Sessão deletada para o dia:", dayName);
   } catch (error) {
     console.error("Erro ao deletar sessão:", error);
   }
@@ -621,7 +598,6 @@ const deleteDaySession = (dayName: string) => {
 const clearAllSessionsHandler = () => {
   try {
     clearAllSessions();
-    console.log("Todas as sessões foram limpas");
   } catch (error) {
     console.error("Erro ao limpar sessões:", error);
   }
@@ -679,7 +655,6 @@ const markDayAsCompleted = (dayName: string) => {
           JSON.stringify(weeklyProgress.value)
         );
       }
-      console.log("Dia marcado como concluído:", dayName);
     }
   }
   showDayOptions.value = false;

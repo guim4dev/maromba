@@ -82,23 +82,10 @@ export const useTraining = () => {
       let triedFetch = false;
       let triedCache = false;
 
-      console.log("=== INICIANDO LOAD TRAINING DATA ===");
-      console.log("URL:", url);
-
       // 1st attempt: fetch with timeout
       try {
-        console.log(
-          "Carregando dados de treinamento (tentando fetch com timeout)..."
-        );
         data = await fetchWithTimeout<TrainingData>(url, 3000);
         triedFetch = true;
-        console.log("Dados carregados via fetch:", data);
-        console.log("Estrutura dos dados:", {
-          hasTreino: !!data.treino,
-          hasDias: !!data.treino?.dias,
-          diasLength: data.treino?.dias?.length,
-          diasNomes: data.treino?.dias?.map((d) => d.nome),
-        });
 
         if (!data.treino || !data.treino.dias) {
           throw new Error(
@@ -108,16 +95,6 @@ export const useTraining = () => {
 
         trainingData.value = data;
         saveTrainingDataToCache(data);
-        console.log(
-          "Dados de treinamento carregados com sucesso e salvos no cache:",
-          trainingData.value
-        );
-        console.log("trainingData.value após atribuição:", {
-          hasTreino: !!trainingData.value?.treino,
-          hasDias: !!trainingData.value?.treino?.dias,
-          diasLength: trainingData.value?.treino?.dias?.length,
-          diasNomes: trainingData.value?.treino?.dias?.map((d) => d.nome),
-        });
         return;
       } catch (error) {
         console.warn("Fetch falhou ou demorou demais:", error);
@@ -125,22 +102,11 @@ export const useTraining = () => {
 
       // 2nd attempt: load from cache
       try {
-        console.log("Tentando carregar dados do cache localStorage...");
         data = loadTrainingDataFromCache();
         triedCache = true;
-        console.log("Dados do cache:", data);
         if (data && data.treino && data.treino.dias) {
           trainingData.value = data;
-          console.log("Dados carregados do cache:", trainingData.value);
-          console.log("Estrutura dos dados do cache:", {
-            hasTreino: !!trainingData.value?.treino,
-            hasDias: !!trainingData.value?.treino?.dias,
-            diasLength: trainingData.value?.treino?.dias?.length,
-            diasNomes: trainingData.value?.treino?.dias?.map((d) => d.nome),
-          });
           return;
-        } else {
-          console.log("Cache inválido ou vazio, tentando fetch novamente");
         }
       } catch (error) {
         console.warn("Erro ao carregar do cache:", error);
@@ -149,7 +115,6 @@ export const useTraining = () => {
       // 3rd attempt: retry fetch (sem timeout)
       if (!triedFetch) {
         try {
-          console.log("Tentando fetch novamente (sem timeout)...");
           data = await $fetch<TrainingData>(url);
           if (!data.treino || !data.treino.dias) {
             throw new Error(
@@ -158,10 +123,6 @@ export const useTraining = () => {
           }
           trainingData.value = data;
           saveTrainingDataToCache(data);
-          console.log(
-            "Dados de treinamento carregados com sucesso na segunda tentativa e salvos no cache:",
-            trainingData.value
-          );
           return;
         } catch (error) {
           console.error("Erro ao tentar fetch novamente:", error);
@@ -189,38 +150,39 @@ export const useTraining = () => {
 
   // Obter início da semana (segunda-feira) no timezone do Brasil
   const getWeekStart = (date: Date = new Date()): string => {
-    // Converter para timezone do Brasil (UTC-3)
-    const brazilTime = new Date(
-      date.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" })
-    );
-
-    if (isNaN(brazilTime.getTime())) {
-      // Fallback para data atual no timezone do Brasil
-      const now = new Date();
-      const brazilNow = new Date(
-        now.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" })
-      );
-      brazilTime.setTime(brazilNow.getTime());
-    }
-
-    const day = brazilTime.getDay();
-    // getDay() retorna: 0=domingo, 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta, 6=sábado
-    // Queremos que segunda-feira seja o início da semana
-    const daysToSubtract = day === 0 ? 6 : day - 1;
-    brazilTime.setDate(brazilTime.getDate() - daysToSubtract);
-
-    console.log("getWeekStart debug:", {
-      originalDate: date.toISOString().split("T")[0],
-      brazilDate: brazilTime.toISOString().split("T")[0],
-      dayOfWeek: day,
-      daysToSubtract,
+    // Obter a data atual no timezone do Brasil
+    const brazilTime = new Date();
+    const brazilDateString = brazilTime.toLocaleString("en-US", {
+      timeZone: "America/Sao_Paulo",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
     });
 
+    // Criar uma nova data no timezone do Brasil
+    const [monthStr, dayStr, yearStr] = brazilDateString.split("/");
+    const brazilDate = new Date(
+      `${yearStr}-${monthStr}-${dayStr}T00:00:00-03:00`
+    );
+
+    const dayOfWeek = brazilDate.getDay();
+    // getDay() retorna: 0=domingo, 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta, 6=sábado
+    // Queremos que segunda-feira seja o início da semana
+    // Se hoje é domingo (0), subtrair 6 dias para chegar na segunda anterior
+    // Se hoje é segunda (1), não subtrair nada (0 dias)
+    // Se hoje é terça (2), subtrair 1 dia para chegar na segunda
+    // E assim por diante...
+    const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+
+    // Criar uma nova data para não modificar a original
+    const weekStart = new Date(brazilDate);
+    weekStart.setDate(brazilDate.getDate() - daysToSubtract);
+
     // Retornar no formato YYYY-MM-DD
-    const year = brazilTime.getFullYear();
-    const month = String(brazilTime.getMonth() + 1).padStart(2, "0");
-    const dayOfMonth = String(brazilTime.getDate()).padStart(2, "0");
-    return `${year}-${month}-${dayOfMonth}`;
+    const yearResult = weekStart.getFullYear();
+    const monthResult = String(weekStart.getMonth() + 1).padStart(2, "0");
+    const dayOfMonth = String(weekStart.getDate()).padStart(2, "0");
+    return `${yearResult}-${monthResult}-${dayOfMonth}`;
   };
 
   // Obter semana atual
@@ -249,18 +211,10 @@ export const useTraining = () => {
 
   // Criar sessão de treino
   const createWorkoutSession = (dayName: string): WorkoutSession => {
-    console.log("createWorkoutSession chamada com dayName:", dayName);
-    console.log("trainingData.value:", trainingData.value);
-
     const day = trainingData.value?.treino.dias.find((d) => d.nome === dayName);
-    console.log("dia encontrado:", day);
 
     if (!day) {
       console.error("Dia de treino não encontrado para:", dayName);
-      console.log(
-        "Dias disponíveis:",
-        trainingData.value?.treino.dias?.map((d) => d.nome)
-      );
       throw new Error("Dia de treino não encontrado");
     }
 
@@ -280,7 +234,6 @@ export const useTraining = () => {
       })),
     };
 
-    console.log("Sessão criada:", session);
     return session;
   };
 
@@ -295,7 +248,6 @@ export const useTraining = () => {
       exercises: [],
     };
 
-    console.log("Sessão de descanso criada:", session);
     return session;
   };
 
@@ -343,17 +295,7 @@ export const useTraining = () => {
 
   // Adicionar sessão de treino
   const addWorkoutSession = (workoutName: string, weekDay?: string) => {
-    console.log(
-      "addWorkoutSession chamada com workoutName:",
-      workoutName,
-      "weekDay:",
-      weekDay
-    );
-    console.log("currentWeek.value:", currentWeek.value);
-    console.log("getCurrentWeekProgress.value:", getCurrentWeekProgress.value);
-
     const session = createWorkoutSession(workoutName);
-    console.log("Sessão criada:", session);
 
     // Se um dia da semana foi especificado, usar ele; senão usar o nome do treino
     if (weekDay) {
@@ -364,13 +306,10 @@ export const useTraining = () => {
     initializeCurrentWeek();
 
     const weekProgress = getCurrentWeekProgress.value;
-    console.log("weekProgress encontrado:", weekProgress);
 
     if (weekProgress) {
       weekProgress.sessions.push(session);
-      console.log("Sessão adicionada ao weekProgress");
       saveProgress();
-      console.log("Progresso salvo");
     } else {
       console.error("weekProgress ainda não encontrado após inicialização");
     }
@@ -378,22 +317,16 @@ export const useTraining = () => {
 
   // Marcar dia como descanso
   const markDayAsRest = (weekDay: string) => {
-    console.log("markDayAsRest chamada com weekDay:", weekDay);
-
     const session = createRestDaySession(weekDay);
-    console.log("Sessão de descanso criada:", session);
 
     // Garantir que a semana atual está inicializada
     initializeCurrentWeek();
 
     const weekProgress = getCurrentWeekProgress.value;
-    console.log("weekProgress encontrado:", weekProgress);
 
     if (weekProgress) {
       weekProgress.sessions.push(session);
-      console.log("Sessão de descanso adicionada ao weekProgress");
       saveProgress();
-      console.log("Progresso salvo");
     } else {
       console.error("weekProgress ainda não encontrado após inicialização");
     }
@@ -409,7 +342,6 @@ export const useTraining = () => {
       if (sessionIndex !== -1) {
         weekProgress.sessions.splice(sessionIndex, 1);
         saveProgress();
-        console.log("Sessão deletada:", sessionId);
       }
     }
   };
@@ -424,7 +356,6 @@ export const useTraining = () => {
       if (sessionIndex !== -1) {
         weekProgress.sessions.splice(sessionIndex, 1);
         saveProgress();
-        console.log("Sessão deletada para o dia:", dayName);
       }
     }
   };
@@ -435,7 +366,6 @@ export const useTraining = () => {
     if (weekProgress) {
       weekProgress.sessions = [];
       saveProgress();
-      console.log("Todas as sessões da semana atual foram limpas");
     }
   };
 

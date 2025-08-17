@@ -157,25 +157,19 @@ const {
 
 onMounted(async () => {
   try {
-    console.log("Iniciando carregamento da aplicação...");
     await loadTrainingData(true);
-
-    console.log("Dados de treinamento carregados:", trainingData.value);
 
     // Aguardar um pouco para garantir que a reatividade seja processada
     await new Promise((resolve) => setTimeout(resolve, 100));
 
     // Carregar progresso salvo
     loadProgress();
-    console.log("Progresso carregado");
 
     // Inicializar semana atual
     initializeCurrentWeek();
-    console.log("Semana atual inicializada:", currentWeek.value);
 
     // Aguardar um tick para garantir que a reatividade seja processada
     await nextTick();
-    console.log("Aplicação inicializada com sucesso");
   } catch (error) {
     console.error("Erro ao inicializar app:", error);
   }
@@ -185,13 +179,7 @@ onMounted(async () => {
 watch(
   trainingData,
   (newData) => {
-    console.log("trainingData mudou na página principal:", newData);
-    if (newData?.treino?.dias) {
-      console.log(
-        "Dias disponíveis na página principal:",
-        newData.treino.dias.map((d) => d.nome)
-      );
-    }
+    // Monitoramento silencioso das mudanças
   },
   { deep: true }
 );
