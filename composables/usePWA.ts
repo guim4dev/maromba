@@ -26,7 +26,7 @@ export const usePWAInstall = () => {
   // Verificar se o usuário já rejeitou o prompt
   const hasUserDismissed = () => {
     if (import.meta.client) {
-      return localStorage.getItem("pwa-dismissed") === "true";
+      return sessionStorage.getItem("pwa-dismissed") === "true";
     }
     return false;
   };
@@ -42,7 +42,7 @@ export const usePWAInstall = () => {
   // Marcar como rejeitado
   const markAsDismissed = () => {
     if (import.meta.client) {
-      localStorage.setItem("pwa-dismissed", "true");
+      sessionStorage.setItem("pwa-dismissed", "true");
     }
   };
 
