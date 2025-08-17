@@ -32,11 +32,36 @@ export default defineNuxtConfig({
       orientation: "portrait",
       scope: "/",
       start_url: "/",
+      id: "/",
       icons: [
         {
           src: "favicon.ico",
-          sizes: "64x64 32x32 24x24 16x16",
+          sizes: "48x48",
           type: "image/x-icon",
+        },
+        {
+          src: "icon-192x192.png",
+          sizes: "192x192",
+          type: "image/png",
+        },
+        {
+          src: "icon-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+        },
+      ],
+      screenshots: [
+        {
+          src: "screenshot-desktop.png",
+          sizes: "2560x1440",
+          type: "image/png",
+          form_factor: "wide",
+        },
+        {
+          src: "screenshot-mobile.png",
+          sizes: "827x1791",
+          type: "image/png",
+          form_factor: "narrow",
         },
       ],
     },
