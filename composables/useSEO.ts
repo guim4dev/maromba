@@ -30,8 +30,8 @@ export const useSEO = () => {
       { property: "og:title", content: siteConfig.title },
       { property: "og:description", content: siteConfig.description },
       { property: "og:image", content: siteConfig.image },
-      { property: "og:image:width", content: "2426" },
-      { property: "og:image:height", content: "836" },
+      { property: "og:image:width", content: "2400" },
+      { property: "og:image:height", content: "1260" },
       {
         property: "og:image:alt",
         content: `${siteConfig.name} - App de tracking de treino de musculação`,
@@ -82,8 +82,8 @@ export const useSEO = () => {
         content: pageConfig.description || siteConfig.description,
       },
       { property: "og:image", content: pageConfig.image || siteConfig.image },
-      { property: "og:image:width", content: "2426" },
-      { property: "og:image:height", content: "836" },
+      { property: "og:image:width", content: "2400" },
+      { property: "og:image:height", content: "1260" },
       {
         property: "og:image:alt",
         content: `${siteConfig.name} - App de tracking de treino de musculação`,

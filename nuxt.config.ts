@@ -40,8 +40,8 @@ export default defineNuxtConfig({
           property: "og:image",
           content: "https://maromba.guima.digital/og-banner.png",
         },
-        { property: "og:image:width", content: "2426" },
-        { property: "og:image:height", content: "836" },
+        { property: "og:image:width", content: "2400" },
+        { property: "og:image:height", content: "1260" },
         {
           property: "og:image:alt",
           content: "Maromba - App de tracking de treino de musculação",
@@ -76,8 +76,16 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
-        { rel: "apple-touch-icon", sizes: "192x192", href: "/icon-192x192.png" },
-        { rel: "apple-touch-icon", sizes: "512x512", href: "/icon-512x512.png" },
+        {
+          rel: "apple-touch-icon",
+          sizes: "192x192",
+          href: "/icon-192x192.png",
+        },
+        {
+          rel: "apple-touch-icon",
+          sizes: "512x512",
+          href: "/icon-512x512.png",
+        },
         { rel: "manifest", href: "/manifest.json" },
       ],
     },
