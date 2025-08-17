@@ -143,53 +143,9 @@
 <script setup lang="ts">
 import { onMounted, nextTick, watch } from "vue";
 
-// SEO e OpenGraph específico para a página inicial
+// SEO já está no nuxt.config.ts
 useHead({
   title: "Maromba - Tracking de Treino",
-  meta: [
-    {
-      name: "description",
-      content:
-        "Acompanhe seu progresso de treino de musculação com o Maromba. App simples e eficiente para gerenciar seus treinos e alcançar seus objetivos fitness.",
-    },
-    // OpenGraph específico da página
-    { property: "og:type", content: "website" },
-    { property: "og:title", content: "Maromba - Tracking de Treino" },
-    {
-      property: "og:description",
-      content:
-        "Acompanhe seu progresso de treino de musculação com o Maromba. App simples e eficiente para gerenciar seus treinos e alcançar seus objetivos fitness.",
-    },
-    {
-      property: "og:image",
-      content: "https://maromba.guima.digital/og-banner.png",
-    }, // Substitua pela URL real da sua imagem quando tiver
-    { property: "og:image:width", content: "1200" },
-    { property: "og:image:height", content: "630" },
-    {
-      property: "og:image:alt",
-      content: "Maromba - App de tracking de treino de musculação",
-    },
-    { property: "og:url", content: "https://maromba.guima.digital" },
-    { property: "og:site_name", content: "Maromba" },
-    { property: "og:locale", content: "pt_BR" },
-    // Twitter Card específico da página
-    { name: "twitter:card", content: "summary_large_image" },
-    { name: "twitter:title", content: "Maromba - Tracking de Treino" },
-    {
-      name: "twitter:description",
-      content:
-        "Acompanhe seu progresso de treino de musculação com o Maromba. App simples e eficiente para gerenciar seus treinos e alcançar seus objetivos fitness.",
-    },
-    {
-      name: "twitter:image",
-      content: "https://maromba.guima.digital/og-banner.png",
-    }, // Substitua pela URL real da sua imagem quando tiver
-    {
-      name: "twitter:image:alt",
-      content: "Maromba - App de tracking de treino de musculação",
-    },
-  ],
 });
 
 const {

@@ -2,9 +2,9 @@
 
 ## Estrutura Implementada
 
-### 1. Template HTML Padrão (`spa-loading-template.html`)
+### 1. Configuração Centralizada (`nuxt.config.ts`)
 
-O Nuxt usa este arquivo como template HTML padrão para SPAs. Todas as meta tags de SEO e OpenGraph estão aqui para garantir que sejam carregadas imediatamente, mesmo antes do JavaScript.
+Todas as meta tags de SEO e OpenGraph estão configuradas no `nuxt.config.ts` usando `app.head`. Isso garante que sejam carregadas imediatamente e de forma centralizada.
 
 #### Meta Tags Incluídas:
 

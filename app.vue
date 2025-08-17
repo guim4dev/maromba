@@ -7,67 +7,9 @@
 </template>
 
 <script setup>
-// Configuração global do app
+// Configuração global do app - SEO já está no nuxt.config.ts
 useHead({
   title: "Maromba - Tracking de Treino",
-  meta: [
-    {
-      name: "description",
-      content:
-        "App para acompanhamento de treinos de musculação. Acompanhe seu progresso, gerencie seus treinos e alcance seus objetivos fitness de forma simples e eficiente.",
-    },
-    { name: "theme-color", content: "#1f2937" },
-    {
-      name: "viewport",
-      content:
-        "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
-    },
-    // OpenGraph tags
-    { property: "og:type", content: "website" }, // "website" is standard; "pwa" or "application" are not valid OpenGraph types
-    { property: "og:title", content: "Maromba - Tracking de Treino" },
-    {
-      property: "og:description",
-      content:
-        "App para acompanhamento de treinos de musculação. Acompanhe seu progresso, gerencie seus treinos e alcance seus objetivos fitness de forma simples e eficiente.",
-    },
-    {
-      property: "og:image",
-      content: "https://maromba.guima.digital/og-banner.png",
-    }, // Substitua pela URL real da sua imagem quando tiver
-    { property: "og:image:width", content: "2426" },
-    { property: "og:image:height", content: "171" },
-    {
-      property: "og:image:alt",
-      content: "Maromba - App de tracking de treino de musculação",
-    },
-    { property: "og:url", content: "https://maromba.guima.digital" },
-    { property: "og:site_name", content: "Maromba" },
-    { property: "og:locale", content: "pt_BR" },
-    // Twitter Card tags
-    { name: "twitter:card", content: "summary_large_image" },
-    { name: "twitter:title", content: "Maromba - Tracking de Treino" },
-    {
-      name: "twitter:description",
-      content:
-        "App para acompanhamento de treinos de musculação. Acompanhe seu progresso, gerencie seus treinos e alcance seus objetivos fitness de forma simples e eficiente.",
-    },
-    {
-      name: "twitter:image",
-      content: "https://maromba.guima.digital/og-banner.png",
-    },
-    {
-      name: "twitter:image:alt",
-      content: "Maromba - App de tracking de treino de musculação",
-    },
-    // Additional meta tags
-    { name: "author", content: "Guim4 Tecnologia" },
-    {
-      name: "keywords",
-      content:
-        "maromba, treino, musculação, fitness, tracking, progresso, app, pwa",
-    },
-    { name: "robots", content: "index, follow" },
-  ],
 });
 
 // Inicializar dark mode
