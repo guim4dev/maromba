@@ -10,6 +10,12 @@ export default defineNuxtConfig({
     "/": { prerender: true },
   },
 
+  // Configuração do template de loading para SPA
+  app: {
+    // Template HTML padrão com SEO e OpenGraph
+    baseURL: "/",
+  },
+
   modules: ["@nuxtjs/tailwindcss", "@vite-pwa/nuxt"],
 
   pwa: {

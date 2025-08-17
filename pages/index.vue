@@ -141,7 +141,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick, watch } from "vue";
+import { onMounted, nextTick, watch } from "vue";
 
 // SEO e OpenGraph específico para a página inicial
 useHead({

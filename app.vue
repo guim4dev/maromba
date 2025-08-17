@@ -35,7 +35,7 @@ useHead({
       content: "https://maromba.guima.digital/og-banner.png",
     }, // Substitua pela URL real da sua imagem quando tiver
     { property: "og:image:width", content: "2426" },
-    { property: "og:image:height", content: "836" },
+    { property: "og:image:height", content: "171" },
     {
       property: "og:image:alt",
       content: "Maromba - App de tracking de treino de musculação",

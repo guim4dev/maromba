@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#1f2937" />
+    
+    <!-- SEO Meta Tags -->
+    <title>Maromba - Tracking de Treino</title>
+    <meta name="description" content="App para acompanhamento de treinos de musculação. Acompanhe seu progresso, gerencie seus treinos e alcance seus objetivos fitness de forma simples e eficiente." />
+    <meta name="author" content="Guim4 Tecnologia" />
+    <meta name="keywords" content="maromba, treino, musculação, fitness, tracking, progresso, app, pwa" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- OpenGraph Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Maromba - Tracking de Treino" />
+    <meta property="og:description" content="App para acompanhamento de treinos de musculação. Acompanhe seu progresso, gerencie seus treinos e alcance seus objetivos fitness de forma simples e eficiente." />
+    <meta property="og:image" content="https://maromba.guima.digital/og-banner.png" />
+    <meta property="og:image:width" content="2426" />
+    <meta property="og:image:height" content="836" />
+    <meta property="og:image:alt" content="Maromba - App de tracking de treino de musculação" />
+    <meta property="og:url" content="https://maromba.guima.digital" />
+    <meta property="og:site_name" content="Maromba" />
+    <meta property="og:locale" content="pt_BR" />
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Maromba - Tracking de Treino" />
+    <meta name="twitter:description" content="App para acompanhamento de treinos de musculação. Acompanhe seu progresso, gerencie seus treinos e alcance seus objetivos fitness de forma simples e eficiente." />
+    <meta name="twitter:image" content="https://maromba.guima.digital/og-banner.png" />
+    <meta name="twitter:image:alt" content="Maromba - App de tracking de treino de musculação" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/icon-192x192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/icon-512x512.png" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Preconnect para performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Loading Styles -->
+    <style>
+      /* Reset e estilos base */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+      }
+      
+      /* Container do loading */
+      .loading-container {
+        text-align: center;
+        max-width: 400px;
+        padding: 2rem;
+      }
+      
+      /* Logo/ícone */
+      .loading-logo {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        animation: pulse 2s infinite;
+      }
+      
+      /* Título */
+      .loading-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      
+      /* Subtítulo */
+      .loading-subtitle {
+        font-size: 1rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      }
+      
+      /* Spinner */
+      .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+      }
+      
+      /* Texto de carregamento */
+      .loading-text {
+        font-size: 0.9rem;
+        opacity: 0.8;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      }
+      
+      /* Animações */
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+      }
+      
+      /* Responsividade */
+      @media (max-width: 480px) {
+        .loading-container {
+          padding: 1rem;
+        }
+        
+        .loading-logo {
+          font-size: 3rem;
+        }
+        
+        .loading-title {
+          font-size: 1.5rem;
+        }
+        
+        .loading-subtitle {
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loading-container">
+      <div class="loading-logo">💪</div>
+      <h1 class="loading-title">Maromba</h1>
+      <p class="loading-subtitle">Tracking de Treino</p>
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Carregando aplicação...</p>
+    </div>
+    
+    <!-- Script para detectar quando o app carregou -->
+    <script>
+      // Detectar quando o Nuxt carregou
+      window.addEventListener('load', function() {
+        // Aguardar um pouco para garantir que o Nuxt inicializou
+        setTimeout(function() {
+          const loadingContainer = document.querySelector('.loading-container');
+          if (loadingContainer) {
+            loadingContainer.style.opacity = '0';
+            loadingContainer.style.transition = 'opacity 0.5s ease-out';
+            setTimeout(function() {
+              loadingContainer.style.display = 'none';
+            }, 500);
+          }
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>
