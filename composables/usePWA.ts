@@ -32,11 +32,10 @@ export const usePWAInstall = () => {
 
   // Instalar PWA
   const install = async () => {
-    // if (isIOS.value) {
-    //   // Para iOS, mostrar instruções
-    //   showIOSInstructions();
-    // } else
-    if ($pwa) {
+    if (isIOS.value) {
+      // Para iOS, mostrar instruções
+      showIOSInstructions();
+    } else if ($pwa) {
       // Usar a função nativa do $pwa
       await $pwa.install();
     }
@@ -90,17 +89,16 @@ export const usePWAInstall = () => {
   });
 
   const canInstall = computed(() => {
-    // if (isIOS.value) {
-    //   return !isInstalled.value && !hasUserDismissed();
-    // }
-    console.log("showInstallPrompt", $pwa?.showInstallPrompt);
+    if (isIOS.value) {
+      return !isInstalled.value && !hasUserDismissed();
+    }
     return $pwa?.showInstallPrompt || false;
   });
 
   // Inicializar
   const init = () => {
     if (import.meta.client) {
-      // detectIOS(); // Comentado temporariamente
+      detectIOS();
     }
   };
 
