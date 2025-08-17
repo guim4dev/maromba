@@ -88,6 +88,15 @@
       >
         + Adicionar Treino
       </button>
+
+      <!-- Botão para limpar todas as sessões -->
+      <button
+        v-if="stats.total > 0"
+        @click="showClearConfirmation = true"
+        class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+      >
+        🗑️ Limpar Todas as Sessões
+      </button>
     </div>
 
     <!-- Modal para adicionar treino -->
@@ -140,10 +149,10 @@
           <button
             v-for="day in availableDays"
             :key="day.nome"
-            @click="addWorkout(day.nome)"
+            @click="addWorkoutAndOpenSession(day.nome)"
             class="w-full text-left p-4 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-200"
           >
-            <div class="flex items-start justify-between">
+            <div class="flex items-center justify-between">
               <div class="flex-1">
                 <div class="font-semibold text-gray-800 text-lg mb-1">
                   {{ day.nome }}
@@ -157,7 +166,7 @@
                   {{ getTotalSets(day) }} séries totais
                 </div>
               </div>
-              <div class="ml-3">
+              <div class="flex items-center justify-center ml-3">
                 <svg
                   class="w-5 h-5 text-gray-400"
                   fill="none"
@@ -218,7 +227,7 @@
           <!-- Se não tem sessão -->
           <div v-if="!selectedDay.hasSession">
             <button
-              @click="showAddWorkout = true"
+              @click="handleAddWorkoutFromDayOptions"
               class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors mb-2"
             >
               Adicionar Treino
@@ -254,12 +263,30 @@
               </p>
             </div>
 
-            <button
-              @click="deleteDaySession(selectedDay.day)"
-              class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
-            >
-              Deletar Sessão
-            </button>
+            <div class="space-y-2">
+              <button
+                v-if="!selectedDay.completed"
+                @click="openWorkoutSession(selectedDay.day)"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+              >
+                Preencher Treino
+              </button>
+
+              <button
+                v-if="!selectedDay.completed"
+                @click="markDayAsCompleted(selectedDay.day)"
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+              >
+                Marcar como Concluído
+              </button>
+
+              <button
+                @click="deleteDaySession(selectedDay.day)"
+                class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+              >
+                Deletar Sessão
+              </button>
+            </div>
           </div>
         </div>
 
@@ -271,6 +298,69 @@
             Cancelar
           </button>
         </div>
+      </div>
+    </Dialog>
+
+    <!-- Modal de confirmação para limpar sessões -->
+    <Dialog v-model="showClearConfirmation">
+      <div class="p-6 w-full max-w-md mx-auto">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-bold text-gray-800">Confirmar Limpeza</h3>
+          <button
+            @click="showClearConfirmation = false"
+            class="text-gray-400 hover:text-gray-600"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="mb-6">
+          <p class="text-gray-600 mb-4">
+            Tem certeza que deseja limpar todas as sessões da semana atual?
+          </p>
+          <p class="text-sm text-red-600 font-medium">
+            Esta ação não pode ser desfeita.
+          </p>
+        </div>
+
+        <div class="flex space-x-3">
+          <button
+            @click="clearAllSessionsHandler"
+            class="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+          >
+            Sim, Limpar Tudo
+          </button>
+          <button
+            @click="showClearConfirmation = false"
+            class="flex-1 px-4 py-3 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </Dialog>
+
+    <!-- Modal para preencher treino -->
+    <Dialog v-model="showWorkoutSession">
+      <div class="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <WorkoutSession
+          v-if="selectedSession"
+          :session="selectedSession"
+          @close="showWorkoutSession = false"
+          @update="handleSessionUpdate"
+        />
       </div>
     </Dialog>
   </div>
@@ -286,11 +376,18 @@ const {
   addWorkoutSession,
   markDayAsRest,
   deleteSessionByDay,
+  clearAllSessions,
+  getCurrentWeekProgress,
+  weeklyProgress,
 } = useTraining();
 
 console.log("addWorkoutSession importada:", typeof addWorkoutSession);
 
 const showAddWorkout = ref(false);
+const showDayOptions = ref(false);
+const showWorkoutSession = ref(false);
+const selectedDay = ref<any>(null);
+const selectedSession = ref<any>(null);
 
 const stats = computed(() => getWeeklyStats.value);
 
@@ -366,6 +463,7 @@ const formatWeekRange = (weekStart: string) => {
 
 const getDayCardClass = (day: any) => {
   if (!day.hasSession) return "border-gray-200 bg-gray-50";
+  if (day.isRestDay) return "border-purple-200 bg-purple-50";
   if (day.completed) return "border-green-200 bg-green-50";
   return "border-yellow-200 bg-yellow-50";
 };
@@ -387,7 +485,36 @@ const addWorkout = (dayName: string) => {
   console.log("trainingData antes de addWorkoutSession:", trainingData.value);
 
   try {
-    addWorkoutSession(dayName);
+    // Se estamos adicionando um treino a um dia específico da semana
+    if (selectedDay.value && selectedDay.value.day) {
+      addWorkoutSession(dayName, selectedDay.value.day);
+    } else {
+      // Fallback: usar apenas o nome do treino
+      addWorkoutSession(dayName);
+    }
+    console.log("addWorkoutSession executada com sucesso");
+  } catch (error) {
+    console.error("Erro ao adicionar workout session:", error);
+  }
+
+  showAddWorkout.value = false;
+};
+
+const addWorkoutAndOpenSession = (dayName: string) => {
+  console.log("addWorkoutAndOpenSession chamada com dayName:", dayName);
+
+  try {
+    // Se estamos adicionando um treino a um dia específico da semana
+    if (selectedDay.value && selectedDay.value.day) {
+      addWorkoutSession(dayName, selectedDay.value.day);
+      // Abrir o dialog de edição para o dia selecionado
+      setTimeout(() => {
+        openWorkoutSession(selectedDay.value.day);
+      }, 100);
+    } else {
+      // Fallback: usar apenas o nome do treino
+      addWorkoutSession(dayName);
+    }
     console.log("addWorkoutSession executada com sucesso");
   } catch (error) {
     console.error("Erro ao adicionar workout session:", error);
@@ -432,6 +559,73 @@ const deleteDaySession = (dayName: string) => {
   selectedDay.value = null;
 };
 
-const showDayOptions = ref(false);
-const selectedDay = ref<any>(null);
+const clearAllSessionsHandler = () => {
+  try {
+    clearAllSessions();
+    console.log("Todas as sessões foram limpas");
+  } catch (error) {
+    console.error("Erro ao limpar sessões:", error);
+  }
+  showClearConfirmation.value = false;
+};
+
+const handleAddWorkoutFromDayOptions = () => {
+  showDayOptions.value = false;
+  showAddWorkout.value = true;
+};
+
+const openWorkoutSession = (dayName: string) => {
+  const weekProgress = getCurrentWeekProgress.value;
+  if (weekProgress) {
+    const session = weekProgress.sessions.find((s) => s.dayName === dayName);
+    if (session) {
+      selectedSession.value = session;
+      showWorkoutSession.value = true;
+      showDayOptions.value = false;
+    }
+  }
+};
+
+const handleSessionUpdate = (updatedSession: any) => {
+  selectedSession.value = updatedSession;
+  // Atualizar a sessão no progresso da semana
+  const weekProgress = getCurrentWeekProgress.value;
+  if (weekProgress) {
+    const sessionIndex = weekProgress.sessions.findIndex(
+      (s) => s.id === updatedSession.id
+    );
+    if (sessionIndex !== -1) {
+      weekProgress.sessions[sessionIndex] = updatedSession;
+      // Salvar o progresso
+      if (typeof window !== "undefined") {
+        localStorage.setItem(
+          "maromba-weekly-progress",
+          JSON.stringify(weeklyProgress.value)
+        );
+      }
+    }
+  }
+};
+
+const markDayAsCompleted = (dayName: string) => {
+  const weekProgress = getCurrentWeekProgress.value;
+  if (weekProgress) {
+    const session = weekProgress.sessions.find((s) => s.dayName === dayName);
+    if (session) {
+      session.completed = true;
+      // Salvar o progresso
+      if (typeof window !== "undefined") {
+        localStorage.setItem(
+          "maromba-weekly-progress",
+          JSON.stringify(weeklyProgress.value)
+        );
+      }
+      console.log("Dia marcado como concluído:", dayName);
+    }
+  }
+  showDayOptions.value = false;
+  selectedDay.value = null;
+};
+
+const showClearConfirmation = ref(false);
 </script>

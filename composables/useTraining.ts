@@ -263,11 +263,11 @@ export const useTraining = () => {
   };
 
   // Criar sessão de descanso
-  const createRestDaySession = (dayName: string): WorkoutSession => {
+  const createRestDaySession = (weekDay: string): WorkoutSession => {
     const session = {
-      id: `rest-${dayName}-${Date.now()}`,
+      id: `rest-${weekDay}-${Date.now()}`,
       date: new Date().toISOString().split("T")[0],
-      dayName,
+      dayName: weekDay,
       completed: true,
       isRestDay: true,
       exercises: [],
@@ -320,13 +320,23 @@ export const useTraining = () => {
   };
 
   // Adicionar sessão de treino
-  const addWorkoutSession = (dayName: string) => {
-    console.log("addWorkoutSession chamada com dayName:", dayName);
+  const addWorkoutSession = (workoutName: string, weekDay?: string) => {
+    console.log(
+      "addWorkoutSession chamada com workoutName:",
+      workoutName,
+      "weekDay:",
+      weekDay
+    );
     console.log("currentWeek.value:", currentWeek.value);
     console.log("getCurrentWeekProgress.value:", getCurrentWeekProgress.value);
 
-    const session = createWorkoutSession(dayName);
+    const session = createWorkoutSession(workoutName);
     console.log("Sessão criada:", session);
+
+    // Se um dia da semana foi especificado, usar ele; senão usar o nome do treino
+    if (weekDay) {
+      session.dayName = weekDay;
+    }
 
     // Garantir que a semana atual está inicializada
     initializeCurrentWeek();
@@ -345,10 +355,10 @@ export const useTraining = () => {
   };
 
   // Marcar dia como descanso
-  const markDayAsRest = (dayName: string) => {
-    console.log("markDayAsRest chamada com dayName:", dayName);
+  const markDayAsRest = (weekDay: string) => {
+    console.log("markDayAsRest chamada com weekDay:", weekDay);
 
-    const session = createRestDaySession(dayName);
+    const session = createRestDaySession(weekDay);
     console.log("Sessão de descanso criada:", session);
 
     // Garantir que a semana atual está inicializada
@@ -397,6 +407,16 @@ export const useTraining = () => {
     }
   };
 
+  // Limpar todas as sessões da semana atual
+  const clearAllSessions = () => {
+    const weekProgress = getCurrentWeekProgress.value;
+    if (weekProgress) {
+      weekProgress.sessions = [];
+      saveProgress();
+      console.log("Todas as sessões da semana atual foram limpas");
+    }
+  };
+
   // Marcar sessão como completa
   const completeWorkoutSession = (sessionId: string) => {
     const weekProgress = getCurrentWeekProgress.value;
@@ -439,14 +459,44 @@ export const useTraining = () => {
       const session = weekProgress.sessions.find((s) => s.dayName === day);
       const scheduledWorkout = weeklySchedule[day];
 
+      // Determinar o nome do treino baseado na sessão
+      let sessionWorkoutName = "";
+      if (session && !session.isRestDay) {
+        // Se a sessão tem exercícios, usar o nome do primeiro exercício para identificar o treino
+        if (session.exercises && session.exercises.length > 0) {
+          const firstExercise = session.exercises[0].exerciseName;
+          // Mapear exercícios para treinos baseado no arquivo de treinamento
+          if (trainingData.value?.treino?.dias) {
+            const matchingDay = trainingData.value.treino.dias.find((day) =>
+              day.exercicios.some((ex) => ex.nome === firstExercise)
+            );
+            if (matchingDay) {
+              sessionWorkoutName = matchingDay.nome;
+            }
+          }
+        }
+        // Se não conseguiu mapear, tentar usar o dayName se for um nome de treino válido
+        if (!sessionWorkoutName && trainingData.value?.treino?.dias) {
+          const validWorkoutNames = trainingData.value.treino.dias.map(
+            (d) => d.nome
+          );
+          if (validWorkoutNames.includes(session.dayName)) {
+            sessionWorkoutName = session.dayName;
+          }
+        }
+        // Se ainda não conseguiu mapear, usar o dayName como fallback
+        if (!sessionWorkoutName) {
+          sessionWorkoutName = session.dayName;
+        }
+      }
+
       return {
         day,
         scheduledWorkout,
         hasSession: !!session,
         isRestDay: session?.isRestDay || false,
         completed: session?.completed || false,
-        sessionWorkoutName:
-          session && !session.isRestDay ? session.dayName : "",
+        sessionWorkoutName,
       };
     });
 
@@ -477,5 +527,6 @@ export const useTraining = () => {
     getWeeklyStats,
     getWeeklySchedule,
     isLoading,
+    clearAllSessions,
   };
 };

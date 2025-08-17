@@ -164,6 +164,7 @@ const completeSession = () => {
   session.value.completed = true;
   completeWorkoutSession(session.value.id);
   emit("update", session.value);
+  emit("close");
 };
 
 // Atualizar quando props mudarem
