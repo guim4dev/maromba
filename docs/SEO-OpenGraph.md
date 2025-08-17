@@ -9,6 +9,7 @@ Todas as meta tags de SEO e OpenGraph estão configuradas no `nuxt.config.ts` us
 #### Meta Tags Incluídas:
 
 **SEO Básico:**
+
 - `title` - Título da página
 - `description` - Descrição do app
 - `author` - Autor (Guim4 Tecnologia)
@@ -16,6 +17,7 @@ Todas as meta tags de SEO e OpenGraph estão configuradas no `nuxt.config.ts` us
 - `robots` - Instruções para crawlers
 
 **OpenGraph (Facebook, LinkedIn, WhatsApp):**
+
 - `og:type` - Tipo de conteúdo (website)
 - `og:title` - Título para compartilhamento
 - `og:description` - Descrição para compartilhamento
@@ -27,6 +29,7 @@ Todas as meta tags de SEO e OpenGraph estão configuradas no `nuxt.config.ts` us
 - `og:locale` - Localização (pt_BR)
 
 **Twitter Cards:**
+
 - `twitter:card` - Tipo de card (summary_large_image)
 - `twitter:title` - Título para Twitter
 - `twitter:description` - Descrição para Twitter
@@ -52,6 +55,7 @@ const siteConfig = {
 ### 3. Loading Screen Personalizada
 
 O template inclui uma tela de loading bonita com:
+
 - Logo animado (💪)
 - Título e subtítulo
 - Spinner de carregamento
@@ -61,21 +65,25 @@ O template inclui uma tela de loading bonita com:
 ## Vantagens desta Abordagem
 
 ### ✅ **SEO Otimizado**
+
 - Meta tags carregam imediatamente no HTML
 - Crawlers conseguem ler o conteúdo sem JavaScript
 - Melhor indexação nos motores de busca
 
 ### ✅ **Compartilhamento Perfeito**
+
 - OpenGraph funciona em todas as redes sociais
 - Twitter Cards otimizados
 - WhatsApp, Telegram, LinkedIn, etc.
 
 ### ✅ **Performance**
+
 - Carregamento mais rápido
 - Menos JavaScript para processar
 - Melhor Core Web Vitals
 
 ### ✅ **Manutenibilidade**
+
 - Configurações centralizadas
 - Fácil atualização de URLs e textos
 - Código mais limpo
@@ -83,7 +91,9 @@ O template inclui uma tela de loading bonita com:
 ## Como Atualizar
 
 ### 1. Mudar URL da Imagem
+
 Edite o arquivo `composables/useSEO.ts`:
+
 ```typescript
 const siteConfig = {
   // ...
@@ -93,7 +103,9 @@ const siteConfig = {
 ```
 
 ### 2. Atualizar Descrição
+
 Edite o arquivo `spa-loading-template.html`:
+
 ```html
 <meta name="description" content="Nova descrição aqui..." />
 <meta property="og:description" content="Nova descrição aqui..." />
@@ -101,29 +113,37 @@ Edite o arquivo `spa-loading-template.html`:
 ```
 
 ### 3. Adicionar Novas Páginas
+
 Use o composable `useSEO`:
+
 ```typescript
 const { getPageSEO } = useSEO();
 
-useHead(getPageSEO({
-  title: "Título da Página",
-  description: "Descrição específica",
-  url: "https://maromba.guima.digital/nova-pagina"
-}));
+useHead(
+  getPageSEO({
+    title: "Título da Página",
+    description: "Descrição específica",
+    url: "https://maromba.guima.digital/nova-pagina",
+  })
+);
 ```
 
 ## Testando
 
 ### 1. Facebook Debugger
+
 https://developers.facebook.com/tools/debug/
 
 ### 2. Twitter Card Validator
+
 https://cards-dev.twitter.com/validator
 
 ### 3. LinkedIn Post Inspector
+
 https://www.linkedin.com/post-inspector/
 
 ### 4. WhatsApp Preview
+
 Compartilhe o link no WhatsApp para ver o preview
 
 ## Dimensões da Imagem
