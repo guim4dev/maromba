@@ -64,7 +64,6 @@
 const {
   isInstalled,
   canInstall,
-  isMobile,
   install,
   markAsDismissed,
   hasUserDismissed,
@@ -75,12 +74,7 @@ const waitedLongEnough = ref(false);
 const hasJustDismissed = ref(false);
 
 const showInstallPrompt = computed(() => {
-  return (
-    canInstall.value &&
-    isMobile.value &&
-    !isInstalled.value &&
-    !hasUserDismissed()
-  );
+  return canInstall.value && !isInstalled.value && !hasUserDismissed();
 });
 
 // Função para fechar o prompt

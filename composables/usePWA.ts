@@ -2,17 +2,6 @@ export const usePWAInstall = () => {
   const isInstalled = ref(false);
   const canInstall = ref(false);
   const deferredPrompt = ref<any>(null);
-  const isMobile = ref(false);
-
-  // Detectar dispositivo móvel
-  const detectMobile = () => {
-    if (import.meta.client) {
-      isMobile.value =
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
-        );
-    }
-  };
 
   // Verificar se o PWA já foi instalado
   const checkIfInstalled = () => {
@@ -67,7 +56,6 @@ export const usePWAInstall = () => {
   // Inicializar listeners
   const init = () => {
     if (import.meta.client) {
-      detectMobile();
       checkIfInstalled();
 
       // Escutar o evento beforeinstallprompt
@@ -89,7 +77,6 @@ export const usePWAInstall = () => {
   return {
     isInstalled: readonly(isInstalled),
     canInstall: readonly(canInstall),
-    isMobile: readonly(isMobile),
     install,
     markAsDismissed,
     hasUserDismissed,
