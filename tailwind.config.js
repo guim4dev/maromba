@@ -8,6 +8,7 @@ module.exports = {
     "./app.vue",
     "./error.vue",
   ],
+  darkMode: "class", // Habilita dark mode baseado em classe
   theme: {
     extend: {
       colors: {

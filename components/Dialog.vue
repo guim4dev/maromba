@@ -21,7 +21,7 @@
         leave-to-class="opacity-0 scale-95"
       >
         <div
-          class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl"
+          class="bg-white dark:bg-gray-800 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl transition-colors duration-200"
           @click.stop
         >
           <slot />

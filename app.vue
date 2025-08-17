@@ -22,6 +22,12 @@ useHead({
     },
   ],
 });
+
+// Inicializar dark mode
+const { loadTheme } = useDarkMode();
+onMounted(() => {
+  loadTheme();
+});
 </script>
 
 <style>
@@ -55,10 +61,23 @@ body {
   background: transparent;
 }
 
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.5);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.7);
+}
+
 /* Para Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
+}
+
+.dark * {
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
 }
 
 /* Melhorar experiência mobile */

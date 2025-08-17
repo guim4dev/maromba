@@ -1,23 +1,50 @@
 <template>
-  <div v-if="trainingData" class="bg-white rounded-lg shadow-md p-6">
+  <div
+    v-if="trainingData"
+    class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors duration-200"
+  >
     <div class="flex items-center justify-between mb-4">
-      <h2 class="text-xl font-bold text-gray-800">Progresso Semanal</h2>
-      <div class="text-sm text-gray-600">
+      <h2
+        class="text-xl font-bold text-gray-800 dark:text-white transition-colors duration-200"
+      >
+        Progresso Semanal
+      </h2>
+      <div
+        class="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200"
+      >
         {{ weekRange }}
       </div>
     </div>
 
     <!-- Estatísticas -->
     <div class="grid grid-cols-2 gap-4 mb-6">
-      <div class="bg-blue-50 rounded-lg p-4 text-center">
-        <div class="text-2xl font-bold text-blue-600">
+      <div
+        class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 text-center transition-colors duration-200"
+      >
+        <div
+          class="text-2xl font-bold text-blue-600 dark:text-blue-400 transition-colors duration-200"
+        >
           {{ stats.completed }}
         </div>
-        <div class="text-sm text-blue-800">Treinos Realizados</div>
+        <div
+          class="text-sm text-blue-800 dark:text-blue-200 transition-colors duration-200"
+        >
+          Treinos Realizados
+        </div>
       </div>
-      <div class="bg-green-50 rounded-lg p-4 text-center">
-        <div class="text-2xl font-bold text-green-600">{{ stats.total }}</div>
-        <div class="text-sm text-green-800">Total de Sessões</div>
+      <div
+        class="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 text-center transition-colors duration-200"
+      >
+        <div
+          class="text-2xl font-bold text-green-600 dark:text-green-400 transition-colors duration-200"
+        >
+          {{ stats.total }}
+        </div>
+        <div
+          class="text-sm text-green-800 dark:text-green-200 transition-colors duration-200"
+        >
+          Total de Sessões
+        </div>
       </div>
     </div>
 
@@ -26,7 +53,7 @@
       <div
         v-for="day in stats.days"
         :key="day.day"
-        class="flex items-center justify-between p-3 rounded-lg border cursor-pointer hover:bg-gray-50 transition-colors"
+        class="flex items-center justify-between p-3 rounded-lg border cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
         :class="getDayCardClass(day)"
         @click="handleDayClick(day)"
       >
@@ -37,30 +64,36 @@
           >
             {{ day.day.charAt(0) }}
           </div>
-          <span class="font-medium text-gray-700">{{ day.day }}</span>
+          <span
+            class="font-medium text-gray-700 dark:text-gray-300 transition-colors duration-200"
+            >{{ day.day }}</span
+          >
         </div>
 
         <div class="flex items-center space-x-3">
           <div class="text-right">
             <div
               v-if="day.isRestDay"
-              class="text-sm font-medium text-purple-600"
+              class="text-sm font-medium text-purple-600 dark:text-purple-400 transition-colors duration-200"
             >
               Descanso
             </div>
             <div
               v-else-if="day.hasSession"
-              class="text-sm font-medium text-blue-600"
+              class="text-sm font-medium text-blue-600 dark:text-blue-400 transition-colors duration-200"
             >
               {{ day.sessionWorkoutName }}
             </div>
             <div
               v-if="day.hasSession && !day.isRestDay"
-              class="text-xs text-gray-600"
+              class="text-xs text-gray-600 dark:text-gray-400 transition-colors duration-200"
             >
               {{ day.completed ? "Concluído" : "Pendente" }}
             </div>
-            <div v-else-if="!day.hasSession" class="text-xs text-gray-400">
+            <div
+              v-else-if="!day.hasSession"
+              class="text-xs text-gray-400 dark:text-gray-500 transition-colors duration-200"
+            >
               Clique para adicionar
             </div>
           </div>
@@ -84,7 +117,7 @@
     <div class="mt-6 space-y-2" v-if="stats.total > 0">
       <button
         @click="showClearConfirmation = true"
-        class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+        class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200"
       >
         🗑️ Limpar Todas as Sessões
       </button>
@@ -94,10 +127,14 @@
     <Dialog v-model="showAddWorkout">
       <div class="p-6 w-full max-h-[80vh] overflow-y-auto">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-bold text-gray-800">Selecionar Treino</h3>
+          <h3
+            class="text-lg font-bold text-gray-800 dark:text-white transition-colors duration-200"
+          >
+            Selecionar Treino
+          </h3>
           <button
             @click="showAddWorkout = false"
-            class="text-gray-400 hover:text-gray-600"
+            class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
           >
             <svg
               class="w-6 h-6"
@@ -119,7 +156,7 @@
         <div class="space-y-3">
           <!-- Empty state -->
           <div v-if="availableDays.length === 0" class="text-center py-8">
-            <div class="text-gray-400 mb-2">
+            <div class="text-gray-400 dark:text-gray-500 mb-2">
               <svg
                 class="w-12 h-12 mx-auto"
                 fill="none"
@@ -134,32 +171,42 @@
                 ></path>
               </svg>
             </div>
-            <p class="text-gray-600">Nenhum treino disponível</p>
+            <p
+              class="text-gray-600 dark:text-gray-400 transition-colors duration-200"
+            >
+              Nenhum treino disponível
+            </p>
           </div>
 
           <button
             v-for="day in availableDays"
             :key="day.nome"
             @click="addWorkoutAndOpenSession(day.nome)"
-            class="w-full text-left p-4 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-200"
+            class="w-full text-left p-4 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200"
           >
             <div class="flex items-center justify-between">
               <div class="flex-1">
-                <div class="font-semibold text-gray-800 text-lg mb-1">
+                <div
+                  class="font-semibold text-gray-800 dark:text-white text-lg mb-1 transition-colors duration-200"
+                >
                   {{ day.nome }}
                 </div>
-                <div class="text-sm text-gray-600 mb-2">
+                <div
+                  class="text-sm text-gray-600 dark:text-gray-400 mb-2 transition-colors duration-200"
+                >
                   <span class="font-medium">Grupos musculares:</span>
                   {{ day.grupo_muscular.join(", ") }}
                 </div>
-                <div class="text-xs text-gray-500">
+                <div
+                  class="text-xs text-gray-500 dark:text-gray-500 transition-colors duration-200"
+                >
                   {{ day.exercicios.length }} exercícios •
                   {{ getTotalSets(day) }} séries totais
                 </div>
               </div>
               <div class="flex items-center justify-center ml-3">
                 <svg
-                  class="w-5 h-5 text-gray-400"
+                  class="w-5 h-5 text-gray-400 dark:text-gray-500 transition-colors duration-200"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -176,10 +223,10 @@
           </button>
         </div>
 
-        <div class="mt-6 pt-4 border-t border-gray-200">
+        <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
           <button
             @click="showAddWorkout = false"
-            class="w-full px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            class="w-full px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
           >
             Cancelar
           </button>
@@ -191,12 +238,14 @@
     <Dialog v-model="showDayOptions">
       <div class="p-6 w-full max-w-md mx-auto">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-bold text-gray-800">
+          <h3
+            class="text-lg font-bold text-gray-800 dark:text-white transition-colors duration-200"
+          >
             {{ selectedDay?.day }}
           </h3>
           <button
             @click="showDayOptions = false"
-            class="text-gray-400 hover:text-gray-600"
+            class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
           >
             <svg
               class="w-6 h-6"
@@ -235,18 +284,24 @@
           <!-- Se já tem sessão -->
           <div v-else>
             <div v-if="selectedDay.isRestDay" class="mb-4">
-              <p class="text-sm text-gray-600 mb-2">
+              <p
+                class="text-sm text-gray-600 dark:text-gray-400 mb-2 transition-colors duration-200"
+              >
                 Este dia está marcado como descanso
               </p>
             </div>
             <div v-else class="mb-4">
-              <p class="text-sm text-gray-600 mb-2">
+              <p
+                class="text-sm text-gray-600 dark:text-gray-400 mb-2 transition-colors duration-200"
+              >
                 Treino:
                 <span class="font-medium">{{
                   selectedDay.sessionWorkoutName
                 }}</span>
               </p>
-              <p class="text-sm text-gray-600">
+              <p
+                class="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-200"
+              >
                 Status:
                 <span class="font-medium">{{
                   selectedDay.completed ? "Concluído" : "Pendente"
@@ -281,10 +336,10 @@
           </div>
         </div>
 
-        <div class="mt-6 pt-4 border-t border-gray-200">
+        <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-600">
           <button
             @click="showDayOptions = false"
-            class="w-full px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            class="w-full px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
           >
             Cancelar
           </button>
@@ -296,10 +351,14 @@
     <Dialog v-model="showClearConfirmation">
       <div class="p-6 w-full max-w-md mx-auto">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-bold text-gray-800">Confirmar Limpeza</h3>
+          <h3
+            class="text-lg font-bold text-gray-800 dark:text-white transition-colors duration-200"
+          >
+            Confirmar Limpeza
+          </h3>
           <button
             @click="showClearConfirmation = false"
-            class="text-gray-400 hover:text-gray-600"
+            class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
           >
             <svg
               class="w-6 h-6"
@@ -318,10 +377,14 @@
         </div>
 
         <div class="mb-6">
-          <p class="text-gray-600 mb-4">
+          <p
+            class="text-gray-600 dark:text-gray-400 mb-4 transition-colors duration-200"
+          >
             Tem certeza que deseja limpar todas as sessões da semana atual?
           </p>
-          <p class="text-sm text-red-600 font-medium">
+          <p
+            class="text-sm text-red-600 dark:text-red-400 font-medium transition-colors duration-200"
+          >
             Esta ação não pode ser desfeita.
           </p>
         </div>
@@ -335,7 +398,7 @@
           </button>
           <button
             @click="showClearConfirmation = false"
-            class="flex-1 px-4 py-3 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            class="flex-1 px-4 py-3 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
           >
             Cancelar
           </button>
@@ -453,14 +516,19 @@ const formatWeekRange = (weekStart: string) => {
 };
 
 const getDayCardClass = (day: any) => {
-  if (!day.hasSession) return "border-gray-200 bg-gray-50";
-  if (day.isRestDay) return "border-purple-200 bg-purple-50";
-  if (day.completed) return "border-green-200 bg-green-50";
-  return "border-yellow-200 bg-yellow-50";
+  if (!day.hasSession)
+    return "border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700";
+  if (day.isRestDay)
+    return "border-purple-200 dark:border-purple-600 bg-purple-50 dark:bg-purple-900/20";
+  if (day.completed)
+    return "border-green-200 dark:border-green-600 bg-green-50 dark:bg-green-900/20";
+  return "border-yellow-200 dark:border-yellow-600 bg-yellow-50 dark:bg-yellow-900/20";
 };
 
 const getDayCircleClass = (day: any) => {
-  if (!day.hasSession) return "bg-gray-200 text-gray-600";
+  if (!day.hasSession)
+    return "bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300";
+  if (day.isRestDay) return "bg-purple-500 text-white";
   if (day.completed) return "bg-green-500 text-white";
   return "bg-yellow-400 text-white";
 };
