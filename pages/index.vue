@@ -5,7 +5,7 @@
       <div class="max-w-4xl mx-auto px-4 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-2xl font-bold text-gray-900">Maromba</h1>
+            <h1 class="text-2xl font-bold text-gray-900">💪 Maromba</h1>
             <p class="text-sm text-gray-600">Tracking de Treino</p>
           </div>
 
@@ -78,6 +78,15 @@
         </div>
       </div>
     </main>
+
+    <!-- Footer with Copyright -->
+    <footer class="mt-8 py-4 border-t bg-white">
+      <div class="max-w-4xl mx-auto px-4">
+        <div class="text-center">
+          <p class="text-sm text-gray-500">Vibecoded by Guim4 Tecnologia</p>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
