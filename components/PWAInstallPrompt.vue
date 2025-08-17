@@ -4,7 +4,7 @@
       v-if="showInstallPrompt && !hasJustDismissed && waitedLongEnough"
       class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 shadow-lg"
     >
-      <div class="flex items-center justify-between max-w-md mx-auto">
+      <div class="flex items-center justify-between max-w-4xl mx-auto px-4">
         <div class="flex items-center space-x-3">
           <div
             class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center"
@@ -25,7 +25,13 @@
           </div>
           <div>
             <p class="font-semibold text-sm">Instalar Maromba</p>
-            <p class="text-xs opacity-90">Adicione ao seu dispositivo</p>
+            <p class="text-xs opacity-90">
+              {{
+                isIOS
+                  ? "Adicionar à tela inicial"
+                  : "Adicione ao seu dispositivo"
+              }}
+            </p>
           </div>
         </div>
 
@@ -34,7 +40,7 @@
             @click="install"
             class="bg-white text-blue-600 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors"
           >
-            Instalar
+            {{ isIOS ? "Como instalar" : "Instalar" }}
           </button>
           <button
             @click="dismissPrompt"
@@ -64,6 +70,7 @@
 const {
   isInstalled,
   canInstall,
+  isIOS,
   install,
   markAsDismissed,
   hasUserDismissed,
