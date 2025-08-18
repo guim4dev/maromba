@@ -391,10 +391,10 @@ export const useTraining = () => {
     const weekProgress = getCurrentWeekProgress.value;
     if (!weekProgress) return { total: 0, completed: 0, days: [] };
 
-    const totalSessions = weekProgress.sessions.length;
-    const completedSessions = weekProgress.sessions.filter(
-      (s) => s.completed
-    ).length;
+    // Não contar dias de descanso nas estatísticas
+    const nonRestSessions = weekProgress.sessions.filter((s) => !s.isRestDay);
+    const totalSessions = nonRestSessions.length;
+    const completedSessions = nonRestSessions.filter((s) => s.completed).length;
     const days = [
       "Segunda",
       "Terça",
